@@ -14,7 +14,7 @@ echo "<table>";
 echo "<tr><th>Nome</th><th>Endereço</th></tr>";
 
 while ($row = mysqli_fetch_assoc($resultado)) {
-    echo "<tr><td>{$row['Nome']}</td><td>{$row['Endereco']}</td></tr>";
+    echo "<tr><td>{$row['cliente_nome']}</td><td>{$row['cliente_endereco']}</td></tr>";
 }
 
 echo "</table>";
