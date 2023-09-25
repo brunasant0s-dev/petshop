@@ -11,21 +11,17 @@
 <body>
 
     <header>
+        <img src="./img/logo.avif" alt="Logo da Empresa">
         <h1>Consulta, Agendamento e Visualização de Dados</h1>
     </header>
 
     <main>
-        <form action="consulta.php" method="post">
-            <input type="submit" name="consultar" value="Consultar Dados">
-        </form>
 
-        <form action="agendamento.php" method="post">
-            <input type="submit" name="agendar" value="Agendar Dados">
-        </form>
+        <a class="listar-button" href="./cliente/consulta_cliente.php">Consultar Clientes</a>
 
-        <form action="visualizacao.php" method="post">
-            <input type="submit" name="visualizar" value="Visualizar Dados">
-        </form>
+        <a class="listar-button" href="consulta_animal.php">Consultar Animais</a>
+
+        <a class="listar-button" href="consulta_agenda.php">Consultar Agendamentos</a>
     </main>
 
 </body>
