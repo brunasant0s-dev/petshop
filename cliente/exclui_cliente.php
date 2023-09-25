@@ -5,7 +5,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     
     // Consulta o cliente pelo ID
-    $query = "SELECT Nome, Endereco FROM clientes WHERE id = $id";
+    $query = "SELECT cliente_nome, cliente-endereco FROM cliente WHERE id = $id";
     $resultado = mysqli_query($conexao, $query);
     
     if (!$resultado) {
@@ -14,8 +14,8 @@ if (isset($_GET['id'])) {
     
     if (mysqli_num_rows($resultado) == 1) {
         $row = mysqli_fetch_assoc($resultado);
-        $nome = $row['Nome'];
-        $endereco = $row['Endereco'];
+        $nome = $row['cliente_nome'];
+        $endereco = $row['cliente_nome'];
     } else {
         echo "Cliente não encontrado.";
         exit;
@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Exclui o cliente do banco de dados
-    $query = "DELETE FROM clientes WHERE id = $id";
+    $query = "DELETE FROM cliente WHERE id = $id";
     $resultado = mysqli_query($conexao, $query);
     
     if ($resultado) {

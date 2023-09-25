@@ -5,7 +5,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     
     // Consulta o agendamento pelo ID
-    $query = "SELECT PROCEDIMENTO, DATA, NOME_DO_ANIMAL, NOME_DO_CLIENTE FROM agendamentos WHERE id = $id";
+    $query = "SELECT agendamento_procedimento, DATA, fk_cliente_cpf, fk_animal_code, FROM agendamento WHERE id = $id";
     $resultado = mysqli_query($conexao, $query);
     
     if (!$resultado) {
@@ -14,10 +14,10 @@ if (isset($_GET['id'])) {
     
     if (mysqli_num_rows($resultado) == 1) {
         $row = mysqli_fetch_assoc($resultado);
-        $procedimento = $row['PROCEDIMENTO'];
+        $procedimento = $row['agendamento_procedimento'];
         $data = $row['DATA'];
-        $nomeAnimal = $row['NOME_DO_ANIMAL'];
-        $nomeCliente = $row['NOME_DO_CLIENTE'];
+        $nomeAnimal = $row['fk_animal_code'];
+        $nomeCliente = $row['fk_cliente_cpf'];
     } else {
         echo "Agendamento não encontrado.";
         exit;
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $novaData = $_POST['novaData'];
     
     // Atualiza o agendamento no banco de dados
-    $query = "UPDATE agendamentos SET PROCEDIMENTO = '$novoProcedimento', DATA = '$novaData' WHERE id = $id";
+    $query = "UPDATE agendamentos SET agendamento_procedimento = '$novoProcedimento', DATA = '$novaData' WHERE id = $id";
     $resultado = mysqli_query($conexao, $query);
     
     if ($resultado) {
