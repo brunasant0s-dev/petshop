@@ -16,24 +16,27 @@ mysqli_close($conexao);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lista de Clientes</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
-    <h1>Lista de Clientes</h1>
-    <table border="2">
-        <tr>
-            <th>Nome</th>
-            <th>Endereço</th>
-            <th>Ações</th>
-        </tr>
-        <?php
-        while ($row = mysqli_fetch_assoc($resultado)) {
-            echo "<tr><td>{$row['cliente_nome']}</td><td>{$row['cliente_endereco']}</td></tr>";
-        }
+    <div class="container">
+        <h1>Lista de Clientes</h1>
+        <table border="2">
+            <tr>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Ações</th>
+            </tr>
+            <?php
+            while ($row = mysqli_fetch_assoc($resultado)) {
+                echo "<tr><td>{$row['cliente_nome']}</td><td>{$row['cliente_endereco']}</td><td class='actions'>editar excluir</td></tr>";
+            }
 
-        echo "</table>";
-        ?>
+            echo "</table>";
+            ?>
+    </div>
 </body>
 
 </html>

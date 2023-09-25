@@ -12,16 +12,15 @@
 
     <header>
         <img src="./img/logo.avif" alt="Logo da Empresa">
-        <h1>Consulta, Agendamento e Visualização de Dados</h1>
     </header>
 
     <main>
 
         <a class="listar-button" href="./cliente/consulta_cliente.php">Consultar Clientes</a>
 
-        <a class="listar-button" href="consulta_animal.php">Consultar Animais</a>
+        <a class="listar-button" href="./animal/consulta.animal.php">Consultar Animais</a>
 
-        <a class="listar-button" href="consulta_agenda.php">Consultar Agendamentos</a>
+        <a class="listar-button" href="./agendamento/consulta_agenda.php">Consultar Agendamentos</a>
     </main>
 
 </body>
