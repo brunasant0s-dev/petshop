@@ -1,6 +1,6 @@
 <?php
-$host = "seu_host";
-$usuario = "seu_usuario";
+$host = "localhost";
+$usuario = "root";
 $senha = "";
 $banco = "db_petshop";
 
