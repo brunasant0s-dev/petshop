@@ -11,7 +11,8 @@ header {
     justify-content: center;
     display: flex;
     align-items: center;
-    background-color: #F9E3BE; /* Cor do header */
+    background-color: #F9E3BE;
+    /* Cor do header */
     backdrop-filter: blur(10px);
 }
 
@@ -21,20 +22,24 @@ header img {
 
 header h1 {
     margin-top: 10px;
-    color: #333; /* Cor do texto no header */
+    color: #333;
+    /* Cor do texto no header */
 }
 
 main {
     text-align: center;
     margin-top: 50px;
-}.listar-button {
+}
+
+.listar-button {
     display: inline-block;
     margin: 10px;
     padding: 10px 20px;
     font-size: 16px;
     background-color: black;
     color: #fff;
-    text-decoration: none; /* Adicionado para remover sublinhado padrão */
+    text-decoration: none;
+    /* Adicionado para remover sublinhado padrão */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -45,31 +50,38 @@ main {
 .listar-button:hover {
     background-color: #555;
 }
-/*consulta cliente */
+
+/* consultar */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
 }
 
 h1 {
     text-align: center;
+    margin-bottom: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 table, th, td {
