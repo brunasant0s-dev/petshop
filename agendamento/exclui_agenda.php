@@ -5,7 +5,7 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     
     // Consulta o agendamento pelo ID
-    $query = "SELECT PROCEDIMENTO, DATA, NOME_DO_ANIMAL, NOME_DO_CLIENTE FROM agendamentos WHERE id = $id";
+    $query = "SELECT agendamento_procedimento , DATA, fk_animal_code, fk_cliente_cpf FROM agendamento WHERE id = $id";
     $resultado = mysqli_query($conexao, $query);
     
     if (!$resultado) {
@@ -14,10 +14,10 @@ if (isset($_GET['id'])) {
     
     if (mysqli_num_rows($resultado) == 1) {
         $row = mysqli_fetch_assoc($resultado);
-        $procedimento = $row['PROCEDIMENTO'];
+        $procedimento = $row['agendamento_procedimento'];
         $data = $row['DATA'];
-        $nomeAnimal = $row['NOME_DO_ANIMAL'];
-        $nomeCliente = $row['NOME_DO_CLIENTE'];
+        $nomeAnimal = $row['fk_animal_code'];
+        $nomeCliente = $row['fk_cliente_cpf'];
     } else {
         echo "Agendamento não encontrado.";
         exit;
@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Exclui o agendamento do banco de dados
-    $query = "DELETE FROM agendamentos WHERE id = $id";
+    $query = "DELETE FROM agendamento WHERE id = $id";
     $resultado = mysqli_query($conexao, $query);
     
     if ($resultado) {
@@ -43,7 +43,7 @@ mysqli_close($conexao);
 ?>
 
 <h1>Excluir Agendamento</h1>
-<p>Tem certeza de que deseja excluir o agendamento para o procedimento "<?php echo $procedimento; ?>" agendado para "<?php echo $data; ?>"?</p>
+<p>Tem certeza de que deseja excluir o agendamento para o procedimento "<?php echo $agendamento_procedimento; ?>" agendado para "<?php echo $data; ?>"?</p>
 <form method="post" action="">
     <input type="submit" value="Sim">
     <a href="consulta_agendamento.php">Não</a>

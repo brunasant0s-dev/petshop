@@ -1,7 +1,7 @@
 <?php
 include("db_connection.php");
 
-$query = "SELECT Nome, Endereco FROM clientes";
+$query = "SELECT cliente_nome, cliente_endereco FROM cliente";
 $resultado = mysqli_query($conexao, $query);
 
 if (!$resultado) {

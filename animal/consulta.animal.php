@@ -1,7 +1,7 @@
 <?php
 include("db_connection.php");
 
-$query = "SELECT NOME, RACA, DONO FROM animais";
+$query = "SELECT animal_nome, animal_raca, fk_cliente_cpf FROM animais";
 $resultado = mysqli_query($conexao, $query);
 
 if (!$resultado) {
@@ -14,7 +14,7 @@ echo "<table>";
 echo "<tr><th>NOME</th><th>RAÇA</th><th>DONO</th></tr>";
 
 while ($row = mysqli_fetch_assoc($resultado)) {
-    echo "<tr><td>{$row['NOME']}</td><td>{$row['RACA']}</td><td>{$row['DONO']}</td></tr>";
+    echo "<tr><td>{$row['animal_nome']}</td><td>{$row['animal_raca']}</td><td>{$row['fk_cliente_cpf']}</td></tr>";
 }
 
 echo "</table>";
