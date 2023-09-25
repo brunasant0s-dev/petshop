@@ -1,4 +1,6 @@
 <?php
+include("../conexao.php");
+
 if(isset($_POST['submit'])) {
     // Processar o formulário de edição aqui
     $animal_id = $_POST['animal_cod'];
