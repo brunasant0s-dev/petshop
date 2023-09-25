@@ -1,5 +1,5 @@
 <?php
-include("db_connection.php");
+include("../conexao.php");
 
 $query = "SELECT animal_nome, animal_raca, fk_cliente_cpf FROM animais";
 $resultado = mysqli_query($conexao, $query);

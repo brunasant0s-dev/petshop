@@ -1,5 +1,5 @@
 <?php
-include("db_connection.php");
+include("../conexao.php");
 
 $query = "SELECT agendamento_procedimento, DATA, fk_animal_code, cliente_nome FROM agendamento";
 $resultado = mysqli_query($conexao, $query);
