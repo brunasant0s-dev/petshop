@@ -1,44 +1,55 @@
 <?php
-if (isset($_POST['submit'])) {
-    // Processar o formulário de edição aqui
-    $agenda_id = $_POST['agenda_id'];
-    $novo_procedimento = $_POST['novo_procedimento'];
-    $nova_data = $_POST['nova_data'];
+include("db_connection.php");
 
-    // Conecte-se ao banco de dados e atualize os dados do agendamento
-    $servername = "localhost";
-    $username = "seu_usuario";
-    $password = "sua_senha";
-    $dbname = "nome_do_banco";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // Consulta o agendamento pelo ID
+    $query = "SELECT PROCEDIMENTO, DATA, NOME_DO_ANIMAL, NOME_DO_CLIENTE FROM agendamentos WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if (!$resultado) {
+        die("Erro na consulta: " . mysqli_error($conexao));
     }
-
-    $sql = "UPDATE agendamentos SET PROCEDIMENTO='$novo_procedimento', DATA='$nova_data' WHERE ID=$agenda_id";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Agendamento atualizado com sucesso!";
+    
+    if (mysqli_num_rows($resultado) == 1) {
+        $row = mysqli_fetch_assoc($resultado);
+        $procedimento = $row['PROCEDIMENTO'];
+        $data = $row['DATA'];
+        $nomeAnimal = $row['NOME_DO_ANIMAL'];
+        $nomeCliente = $row['NOME_DO_CLIENTE'];
     } else {
-        echo "Erro ao atualizar o agendamento: " . $conn->error;
+        echo "Agendamento não encontrado.";
+        exit;
     }
-
-    $conn->close();
+} else {
+    echo "ID do agendamento não especificado.";
+    exit;
 }
 
-// Formulário HTML para editar um agendamento
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $novoProcedimento = $_POST['novoProcedimento'];
+    $novaData = $_POST['novaData'];
+    
+    // Atualiza o agendamento no banco de dados
+    $query = "UPDATE agendamentos SET PROCEDIMENTO = '$novoProcedimento', DATA = '$novaData' WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if ($resultado) {
+        echo "Agendamento atualizado com sucesso!";
+    } else {
+        die("Erro na atualização do agendamento: " . mysqli_error($conexao));
+    }
+}
+
+mysqli_close($conexao);
 ?>
-<form method="POST" action="edita_agenda.php">
-    <label for="agenda_id">ID do Agendamento:</label>
-    <input type="text" name="agenda_id" required>
-    <br>
-    <label for="novo_procedimento">Novo Procedimento:</label>
-    <input type="text" name="novo_procedimento" required>
-    <br>
-    <label for="nova_data">Nova Data:</label>
-    <input type="date" name="nova_data" required>
-    <br>
-    <input type="submit" name="submit" value="Editar Agendamento">
+
+<h1>Editar Agendamento</h1>
+<form method="post" action="">
+    <label for="novoProcedimento">Procedimento:</label>
+    <input type="text" name="novoProcedimento" value="<?php echo $procedimento; ?>" required><br>
+    <label for="novaData">Data:</label>
+    <input type="date" name="novaData" value="<?php echo $data; ?>" required><br>
+    <input type="submit" value="Atualizar">
 </form>

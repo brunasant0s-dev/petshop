@@ -1,45 +1,50 @@
 <?php
-if (isset($_POST['submit'])) {
-    // Processar o formulário de exclusão aqui
-    $agenda_id = $_POST['agenda_id'];
+include("db_connection.php");
 
-    // Conecte-se ao banco de dados e exclua o agendamento
-    $servername = "localhost";
-    $username = "seu_usuario";
-    $password = "sua_senha";
-    $dbname = "nome_do_banco";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // Consulta o agendamento pelo ID
+    $query = "SELECT PROCEDIMENTO, DATA, NOME_DO_ANIMAL, NOME_DO_CLIENTE FROM agendamentos WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if (!$resultado) {
+        die("Erro na consulta: " . mysqli_error($conexao));
     }
-
-    $sql = "DELETE FROM agendamentos WHERE ID=$agenda_id";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Agendamento excluído com sucesso!";
+    
+    if (mysqli_num_rows($resultado) == 1) {
+        $row = mysqli_fetch_assoc($resultado);
+        $procedimento = $row['PROCEDIMENTO'];
+        $data = $row['DATA'];
+        $nomeAnimal = $row['NOME_DO_ANIMAL'];
+        $nomeCliente = $row['NOME_DO_CLIENTE'];
     } else {
-        echo "Erro ao excluir o agendamento: " . $conn->error;
+        echo "Agendamento não encontrado.";
+        exit;
     }
-
-    $conn->close();
+} else {
+    echo "ID do agendamento não especificado.";
+    exit;
 }
 
-// Formulário HTML para excluir um agendamento
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Exclui o agendamento do banco de dados
+    $query = "DELETE FROM agendamentos WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if ($resultado) {
+        echo "Agendamento excluído com sucesso!";
+    } else {
+        die("Erro na exclusão do agendamento: " . mysqli_error($conexao));
+    }
+}
+
+mysqli_close($conexao);
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Excluir Agendamento</title>
-</head>
-<body>
-    <h2>Excluir Agendamento</h2>
-    <form method="POST" action="exclui_agenda.php">
-        <label for="agenda_id">ID do Agendamento a ser Excluído:</label>
-        <input type="text" name="agenda_id" required>
-        <br>
-        <input type="submit" name="submit" value="Excluir Agendamento">
-    </form>
-</body>
-</html>
+
+<h1>Excluir Agendamento</h1>
+<p>Tem certeza de que deseja excluir o agendamento para o procedimento "<?php echo $procedimento; ?>" agendado para "<?php echo $data; ?>"?</p>
+<form method="post" action="">
+    <input type="submit" value="Sim">
+    <a href="consulta_agendamento.php">Não</a>
+</form>

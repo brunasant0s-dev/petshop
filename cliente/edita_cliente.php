@@ -1,44 +1,53 @@
 <?php
-if(isset($_POST['submit'])) {
-    // Processar o formulário de edição aqui
-    $cliente_id = $_POST['cliente_id'];
-    $novo_nome = $_POST['novo_nome'];
-    $novo_endereco = $_POST['novo_endereco'];
+include("db_connection.php");
 
-    // Conecte-se ao banco de dados e atualize os dados do cliente
-    $servername = "localhost";
-    $username = "seu_usuario";
-    $password = "sua_senha";
-    $dbname = "nome_do_banco";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // Consulta o cliente pelo ID
+    $query = "SELECT Nome, Endereco FROM clientes WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if (!$resultado) {
+        die("Erro na consulta: " . mysqli_error($conexao));
     }
-
-    $sql = "UPDATE clientes SET Nome='$novo_nome', Endereco='$novo_endereco' WHERE ID=$cliente_id";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Cliente atualizado com sucesso!";
+    
+    if (mysqli_num_rows($resultado) == 1) {
+        $row = mysqli_fetch_assoc($resultado);
+        $nome = $row['Nome'];
+        $endereco = $row['Endereco'];
     } else {
-        echo "Erro ao atualizar o cliente: " . $conn->error;
+        echo "Cliente não encontrado.";
+        exit;
     }
-
-    $conn->close();
+} else {
+    echo "ID do cliente não especificado.";
+    exit;
 }
 
-// Formulário HTML para editar um cliente
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $novoNome = $_POST['novoNome'];
+    $novoEndereco = $_POST['novoEndereco'];
+    
+    // Atualiza o cliente no banco de dados
+    $query = "UPDATE clientes SET Nome = '$novoNome', Endereco = '$novoEndereco' WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if ($resultado) {
+        echo "Cliente atualizado com sucesso!";
+    } else {
+        die("Erro na atualização do cliente: " . mysqli_error($conexao));
+    }
+}
+
+mysqli_close($conexao);
 ?>
-<form method="POST" action="edita_cliente.php">
-    <label for="cliente_id">ID do Cliente:</label>
-    <input type="text" name="cliente_id" required>
-    <br>
-    <label for="novo_nome">Novo Nome:</label>
-    <input type="text" name="novo_nome" required>
-    <br>
-    <label for="novo_endereco">Novo Endereço:</label>
-    <input type="text" name="novo_endereco" required>
-    <br>
-    <input type="submit" name="submit" value="Editar Cliente">
+
+<h1>Editar Cliente</h1>
+<form method="post" action="">
+    <label for="novoNome">Nome:</label>
+    <input type="text" name="novoNome" value="<?php echo $nome; ?>" required><br>
+    <label for="novoEndereco">Endereço:</label>
+    <input type="text" name="novoEndereco" value="<?php echo $endereco; ?>" required><br>
+    <input type="submit" value="Atualizar">
 </form>

@@ -1,36 +1,48 @@
 <?php
-if(isset($_POST['submit'])) {
-    // Processar o formulário de exclusão aqui
-    $cliente_id = $_POST['cliente_id'];
+include("db_connection.php");
 
-    // Conecte-se ao banco de dados e exclua o cliente
-    $servername = "localhost";
-    $username = "seu_usuario";
-    $password = "sua_senha";
-    $dbname = "nome_do_banco";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // Consulta o cliente pelo ID
+    $query = "SELECT Nome, Endereco FROM clientes WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if (!$resultado) {
+        die("Erro na consulta: " . mysqli_error($conexao));
     }
-
-    $sql = "DELETE FROM clientes WHERE ID=$cliente_id";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Cliente excluído com sucesso!";
+    
+    if (mysqli_num_rows($resultado) == 1) {
+        $row = mysqli_fetch_assoc($resultado);
+        $nome = $row['Nome'];
+        $endereco = $row['Endereco'];
     } else {
-        echo "Erro ao excluir o cliente: " . $conn->error;
+        echo "Cliente não encontrado.";
+        exit;
     }
-
-    $conn->close();
+} else {
+    echo "ID do cliente não especificado.";
+    exit;
 }
 
-// Formulário HTML para excluir um cliente
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Exclui o cliente do banco de dados
+    $query = "DELETE FROM clientes WHERE id = $id";
+    $resultado = mysqli_query($conexao, $query);
+    
+    if ($resultado) {
+        echo "Cliente excluído com sucesso!";
+    } else {
+        die("Erro na exclusão do cliente: " . mysqli_error($conexao));
+    }
+}
+
+mysqli_close($conexao);
 ?>
-<form method="POST" action="exclui_cliente.php">
-    <label for="cliente_id">ID do Cliente a ser Excluído:</label>
-    <input type="text" name="cliente_id" required>
-    <br>
-    <input type="submit" name="submit" value="Excluir Cliente">
+
+<h1>Excluir Cliente</h1>
+<p>Tem certeza de que deseja excluir o cliente "<?php echo $nome; ?>" com o endereço "<?php echo $endereco; ?>"?</p>
+<form method="post" action="">
+    <input type="submit" value="Sim">
+    <a href="consulta_cliente.php">Não</a>
 </form>

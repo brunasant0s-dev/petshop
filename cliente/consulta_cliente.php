@@ -1,19 +1,23 @@
 <?php
-// Conecta ao banco de dados (mesmo código que em consulta_animal.php)
+include("db_connection.php");
 
-// Consulta clientes
-$sql = "SELECT Nome, Endereco FROM clientes";
-$result = $conn->query($sql);
+$query = "SELECT Nome, Endereco FROM clientes";
+$resultado = mysqli_query($conexao, $query);
 
-if ($result->num_rows > 0) {
-    echo "<table><tr><th>Nome</th><th>Endereço</th></tr>";
-    while($row = $result->fetch_assoc()) {
-        echo "<tr><td>".$row["Nome"]."</td><td>".$row["Endereco"]."</td></tr>";
-    }
-    echo "</table>";
-} else {
-    echo "Nenhum cliente cadastrado.";
+if (!$resultado) {
+    die("Erro na consulta: " . mysqli_error($conexao));
 }
 
-$conn->close();
+// Exibir a lista de clientes
+echo "<h1>Lista de Clientes</h1>";
+echo "<table>";
+echo "<tr><th>Nome</th><th>Endereço</th></tr>";
+
+while ($row = mysqli_fetch_assoc($resultado)) {
+    echo "<tr><td>{$row['Nome']}</td><td>{$row['Endereco']}</td></tr>";
+}
+
+echo "</table>";
+
+mysqli_close($conexao);
 ?>
